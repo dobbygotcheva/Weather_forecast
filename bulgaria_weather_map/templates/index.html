@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bulgaria Weather Map</title>
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- OpenLayers CSS - Local -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='ol/ol.css') }}" type="text/css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- OpenLayers JS - Local -->
+    <script src="{{ url_for('static', filename='ol/ol.js') }}"></script>
+
+    <!-- Error handling -->
+    <script>
+        console.log('Page loading...');
+        window.onerror = function(message, source, lineno, colno, error) {
+            console.error('Global error:', message, 'at', source, lineno, colno);
+            var debugOutput = document.getElementById('debug-output');
+            if (debugOutput) {
+                debugOutput.style.display = 'block';
+                debugOutput.innerHTML += '<p>Error: ' + message + '</p>';
+            }
+            return false;
+        };
+    </script>
+</head>
+<body>
+    <div class="app-wrapper">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-cloud-sun"></i>
+                <h1>Bulgaria Weather Map</h1>
+            </div>
+            <div class="weather-status">
+                <!-- This will be populated by JavaScript -->
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="map-container">
+                <div id="map" class="map"></div>
+                <div class="map-controls">
+                    <button id="refresh-button" class="refresh-button">
+                        <i class="fas fa-sync-alt"></i> Refresh Now
+                    </button>
+                </div>
+            </div>
+        </main>
+
+
+        <!-- Debug output section (hidden by default) -->
+        <div id="debug-output" style="display: none; padding: 20px; background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; margin: 10px; border-radius: 5px;">
+            <h3>Debug Information</h3>
+            <div id="debug-content"></div>
+        </div>
+    </div>
+
+    <!-- Initialize debugging -->
+    <script>
+        // Make sure debug elements exist before using them
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page initialization...');
+
+            // Create debug section if it doesn't exist
+            if (!document.getElementById('debug-output')) {
+                const debugOutput = document.createElement('div');
+                debugOutput.id = 'debug-output';
+                debugOutput.style.display = 'none';
+                debugOutput.style.padding = '20px';
+                debugOutput.style.background = '#f8d7da';
+                debugOutput.style.color = '#721c24';
+                debugOutput.style.border = '1px solid #f5c6cb';
+                debugOutput.style.margin = '10px';
+                debugOutput.style.borderRadius = '5px';
+                debugOutput.innerHTML = '<h3>Debug Information</h3><div id="debug-content"></div>';
+                document.body.appendChild(debugOutput);
+            }
+
+            // Check for OpenLayers
+            if (typeof ol === 'undefined') {
+                console.error('OpenLayers library not available - will use fallback map');
+
+                // Show in debug panel
+                const debugOutput = document.getElementById('debug-output');
+                if (debugOutput) {
+                    debugOutput.style.display = 'block';
+
+                    const debugContent = document.getElementById('debug-content');
+                    if (debugContent) {
+                        debugContent.innerHTML += '<p>OpenLayers library not available - will use fallback map</p>';
+                    }
+                }
+            } else {
+                console.log('OpenLayers available:', ol.VERSION || 'unknown version');
+            }
+        });
+    </script>
+
+    <!-- Custom JavaScript -->
+    <script src="{{ url_for('static', filename='js/map.js') }}"></script>
+</body>
+</html>

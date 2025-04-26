@@ -1,0 +1,380 @@
+/* Bulgaria Weather Map - Main CSS */
+
+/* Variables */
+:root {
+    --primary-color: #4158D0;
+    --primary-gradient: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+    --secondary-color: #6c5ce7;
+    --accent-color: #00cec9;
+    --text-color: #2d3436;
+    --text-light: #636e72;
+    --bg-color: #f7f9fc;
+    --card-bg: #ffffff;
+    --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.05), 0 6px 6px rgba(0, 0, 0, 0.07);
+    --header-height: 70px;
+    --border-radius: 12px;
+    --transition: all 0.3s ease;
+}
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* Layout */
+.app-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header */
+.header {
+    background: var(--primary-gradient);
+    color: white;
+    padding: 0 2rem;
+    height: var(--header-height);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 10;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo i {
+    font-size: 2rem;
+    color: #FFCC70;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.logo h1 {
+    font-size: 1.5rem;
+    margin: 0;
+    color: white;
+    font-weight: 700;
+}
+
+.weather-status {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    backdrop-filter: blur(5px);
+}
+
+.weather-status p {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: 1rem;
+    display: flex;
+    max-width: 100%;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Map Container */
+.map-container {
+    position: relative;
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    width: 100%;
+    flex: 1;
+}
+
+.map {
+    width: 100%;
+    height: calc(100vh - var(--header-height) - 2rem);
+    border: none;
+    position: relative;
+    z-index: 1;
+}
+
+.map-controls {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+}
+
+/* Map styling continues below */
+
+
+/* Buttons */
+.refresh-button {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
+    transition: var(--transition);
+}
+
+.refresh-button:hover {
+    background-color: #5549d6;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(108, 92, 231, 0.5);
+}
+
+.refresh-button:active {
+    transform: translateY(0);
+}
+
+.refresh-button:disabled {
+    background-color: #b2bec3;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.refresh-button i {
+    font-size: 0.9rem;
+}
+
+/* Loading indicators */
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.loading-spinner {
+    border: 5px solid rgba(65, 88, 208, 0.1);
+    border-top: 5px solid var(--primary-color);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-overlay p {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.loading-spinner-small {
+    border: 3px solid rgba(65, 88, 208, 0.1);
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    animation: spin 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+    display: inline-block;
+}
+
+.refresh-indicator {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+/* Popup styles */
+.ol-popup {
+    position: absolute;
+    background: var(--card-bg);
+    box-shadow: var(--card-shadow);
+    padding: 0;
+    border-radius: var(--border-radius);
+    border: none;
+    bottom: 12px;
+    left: -50px;
+    min-width: 220px;
+    overflow: hidden;
+    pointer-events: auto;
+    transform: translateY(0);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 1;
+}
+
+.ol-popup:after, .ol-popup:before {
+    top: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.ol-popup:after {
+    border-top-color: var(--card-bg);
+    border-width: 10px;
+    left: 50%;
+    margin-left: -10px;
+}
+
+.ol-popup:before {
+    border-top-color: rgba(0, 0, 0, 0.1);
+    border-width: 11px;
+    left: 50%;
+    margin-left: -11px;
+}
+
+.popup-content {
+    overflow: hidden;
+}
+
+.popup-content h3 {
+    margin: 0;
+    padding: 12px 15px;
+    background: var(--primary-gradient);
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.popup-content p {
+    margin: 0;
+    padding: 10px 15px;
+    color: var(--text-light);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.popup-content p:last-child {
+    border-bottom: none;
+}
+
+/* OpenLayers Custom Styles */
+.ol-zoom {
+    top: 1rem;
+    left: 1rem;
+}
+
+.ol-zoom button {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
+}
+
+.ol-zoom button:hover {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+/* Weather marker styles */
+.ol-layer canvas {
+    font-family: 'Poppins', 'Font Awesome 6 Free', sans-serif;
+}
+
+/* Make sure Font Awesome is loaded for text elements */
+@font-face {
+    font-family: 'Font Awesome 6 Free';
+    font-style: normal;
+    font-weight: 900;
+    font-display: block;
+    src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff2") format("woff2");
+}
+
+.ol-scale-line {
+    background-color: rgba(44, 62, 80, 0.8);
+    border-radius: 4px;
+    bottom: 8px;
+    left: 8px;
+    padding: 2px 6px;
+}
+
+/* Debug panel */
+#debug-output {
+    padding: 20px;
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .main-content {
+        padding: 0.5rem;
+    }
+
+    .map {
+        height: calc(100vh - var(--header-height) - 1rem);
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        height: auto;
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .main-content {
+        padding: 0.5rem;
+    }
+
+    .map {
+        height: calc(100vh - 120px - 1rem);
+    }
+}
+
+@media (max-width: 480px) {
+    .logo h1 {
+        font-size: 1.2rem;
+    }
+
+    .refresh-button {
+        padding: 8px 15px;
+        font-size: 0.8rem;
+    }
+}
